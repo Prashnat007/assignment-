@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithmic Thinking Assessment: Letter Frequency Analysis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@400;500;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6c63ff;
+            --primary-light: #8a84ff;
+            --primary-dark: #5046e5;
+            --secondary-color: #12122a;
+            --background-color: #0a0a1a;
+            --card-bg: #1a1a32;
+            --accent-color: #ff6b9d;
+            --accent-secondary: #00d9b5;
+            --text-color: #f5f5f7;
+            --light-text: #b8b8c0;
+            --muted-text: #8a8a9a;
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+            --linear-algebra: #ff6b9d;
+            --data-science: #00d9b5;
+            --statistics: #6c63ff;
+            --algorithms: #ffc107;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Alegreya SC', serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(108, 99, 255, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 107, 157, 0.08) 0%, transparent 25%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent-color), var(--primary-color));
+            border-radius: 2px;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-secondary));
+            border-radius: 2px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(to right, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '{ frequency }';
+            position: absolute;
+            bottom: -15px;
+            right: -20px;
+            font-size: 1rem;
+            color: var(--accent-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            transform: rotate(-5deg);
+            opacity: 0.7;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            color: var(--primary-light);
+            margin: 2.5rem 0 1rem;
+            border-bottom: 2px solid var(--primary-dark);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            color: var(--accent-color);
+            margin: 1.5rem 0 0.8rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            color: var(--light-text);
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-color), var(--primary-color));
+            border-radius: 2px 0 0 2px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .example {
+            background: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .example::after {
+            content: '//example';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.8rem;
+            color: var(--muted-text);
+            font-style: italic;
+        }
+        
+        .code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 0 5px;
+            border-radius: 3px;
+            color: var(--accent-secondary);
+        }
+        
+        .decomposition-item, .pattern-item, .abstraction-item {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-left: 3px solid;
+            background: rgba(26, 26, 50, 0.6);
+            border-radius: 0 8px 8px 0;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .decomposition-item {
+            border-left-color: var(--accent-color);
+        }
+        
+        .pattern-item {
+            border-left-color: var(--accent-secondary);
+        }
+        
+        .abstraction-item {
+            border-left-color: var(--primary-color);
+        }
+        
+        .decomposition-item:hover, .pattern-item:hover, .abstraction-item:hover {
+            transform: translateX(5px);
+            box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .item-title {
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .item-title i {
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+        
+        .decomposition-item .item-title i {
+            color: var(--accent-color);
+        }
+        
+        .pattern-item .item-title i {
+            color: var(--accent-secondary);
+        }
+        
+        .abstraction-item .item-title i {
+            color: var(--primary-color);
+        }
+        
+        .item-explanation {
+            color: var(--light-text);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .flowchart-container {
+            background: linear-gradient(145deg, #1e1e36, #15152a);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .flowchart-placeholder {
+            background: var(--secondary-color);
+            border: 2px dashed var(--accent-color);
+            border-radius: 8px;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            transition: var(--transition);
+        }
+        
+        .flowchart-placeholder:hover {
+            border-color: var(--primary-color);
+            background: rgba(18, 18, 42, 0.8);
+        }
+        
+        .flowchart-placeholder i {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .flowchart-placeholder p {
+            color: var(--light-text);
+        }
+        
+        .implementation {
+            background: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            position: relative;
+            max-height: 500px;
+            overflow-y: auto;
+            color: var(--light-text);
+        }
+        
+        .implementation pre {
+            white-space: pre-wrap;
+        }
+        
+        .implementation-header {
+            position: sticky;
+            top: 0;
+            background: var(--secondary-color);
+            padding: 0.5rem 0;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--primary-dark);
+            font-weight: bold;
+            color: var(--primary-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .implementation-language {
+            background: var(--primary-dark);
+            color: var(--text-color);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: var(--primary-dark);
+            color: var(--text-color);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .key-insight {
+            background: rgba(255, 107, 157, 0.1);
+            border-left: 3px solid var(--accent-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .key-insight-title {
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .key-insight-title i {
+            margin-right: 0.5rem;
+        }
+        
+        .interactive-demo {
+            background: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .interactive-demo-header {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--accent-secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .interactive-demo-header i {
+            margin-right: 0.5rem;
+        }
+        
+        .input-container {
+            margin-bottom: 1rem;
+        }
+        
+        .input-container label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light-text);
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--primary-dark);
+            border-radius: 4px;
+            color: var(--text-color);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+        }
+        
+        .button {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+            color: var(--text-color);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .button:hover {
+            background: linear-gradient(to right, var(--primary-light), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(80, 70, 229, 0.4);
+        }
+        
+        .button i {
+            margin-right: 0.5rem;
+        }
+        
+        .result-container {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--accent-secondary);
+        }
+        
+        .result-display {
+            font-family: 'JetBrains Mono', monospace;
+            color: black;
+            white-space: pre-wrap;
+        }
+        
+        .time-complexity {
+            background: rgba(0, 217, 181, 0.1);
+            border-left: 3px solid var(--accent-secondary);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            color: var(--muted-text);
+            font-size: 0.9rem;
+            position: relative;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary-dark), var(--accent-color));
+            border-radius: 2px;
+        }
+        
+        .tab-container {
+            margin-bottom: 2rem;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .tab-button {
+            background: var(--secondary-color);
+            color: var(--light-text);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            margin-right: 0.5rem;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        
+        .tab-button.active {
+            background: var(--primary-dark);
+            color: var(--text-color);
+        }
+        
+        .tab-button:hover:not(.active) {
+            background: rgba(108, 99, 255, 0.2);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .progress-container {
+            width: 100%;
+            background: var(--secondary-color);
+            height: 8px;
+            border-radius: 4px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--accent-color), var(--primary-color));
+            width: 0;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .insight-card {
+            background: rgba(26, 26, 50, 0.6);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+        
+        .insight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .insight-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .insight-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            border-bottom: 1px dashed var(--muted-text);
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background: var(--secondary-color);
+            color: var(--light-text);
+            text-align: center;
+            border-radius: 6px;
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            font-size: 0.8rem;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .collapsible {
+            cursor: pointer;
+            padding: 1rem;
+            width: 100%;
+            text-align: left;
+            background: rgba(26, 26, 50, 0.6);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-color);
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+        
+        .collapsible:hover {
+            background: rgba(26, 26, 50, 0.8);
+        }
+        
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(18, 18, 42, 0.5);
+            border-radius: 0 0 8px 8px;
+            margin-top: -8px;
+            margin-bottom: 1rem;
+            padding: 0 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h1::after {
+                font-size: 0.8rem;
+                bottom: -10px;
+                right: -10px;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .tab-button {
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Algorithmic Thinking Assessment</h1>
+            <p>Letter Frequency Analysis Assignment</p>
+            <div style="margin-top: 1rem;">
+                <span class="tag"><i class="fas fa-hashtag"></i> Algorithm</span>
+                <span class="tag"><i class="fas fa-hashtag"></i> Frequency Analysis</span>
+                <span class="tag"><i class="fas fa-hashtag"></i> Data Processing</span>
+            </div>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <section class="card">
+            <h2><i class="fas fa-file-alt"></i> Problem Statement</h2>
+            <p>Create an algorithm to count the frequency of each letter (A-Z) in a text document. Your solution should ignore case (count 'a' and 'A' as the same letter) and ignore any non-alphabetic characters.</p>
+            
+            <div class="example">
+                <p><strong>Input:</strong> "Hello, World!"</p>
+                <p><strong>Output:</strong> {'H':1, 'E':1, 'L':3, 'O':2, 'R':1, 'W':1, 'D':1}</p>
+            </div>
+            
+            <div class="key-insight">
+                <div class="key-insight-title"><i class="fas fa-lightbulb"></i> Key Insight</div>
+                <p>This problem requires us to parse text, filter characters, and count occurrences. It's a classic example of frequency analysis, which has applications in cryptography, data compression, and natural language processing.</p>
+            </div>
+            
+            <div class="interactive-demo">
+                <div class="interactive-demo-header"><i class="fas fa-code"></i> Interactive Demo</div>
+                <div class="input-container">
+                    <label for="demoInput">Try it yourself:</label>
+                    <textarea id="demoInput" class="input-field" rows="3" placeholder="Enter any text here...">Hello, World!</textarea>
+                </div>
+                <button id="analyzeBtn" class="button"><i class="fas fa-play"></i> Analyze Text</button>
+                
+                <div id="resultContainer" class="result-container">
+                    <div class="result-title">Letter Frequency:</div>
+                    <pre id="resultDisplay" class="result-display"></pre>
+                </div>
+            </div>
+        </section>
+        
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="decomposition">Decomposition</button>
+                <button class="tab-button" data-tab="pattern">Pattern Recognition</button>
+                <button class="tab-button" data-tab="abstraction">Abstraction</button>
+                <button class="tab-button" data-tab="algorithm">Algorithm Design</button>
+                <button class="tab-button" data-tab="implementation">Implementation</button>
+            </div>
+            
+            <div id="decomposition" class="tab-content active">
+                <section class="card">
+                    <h2><i class="fas fa-puzzle-piece"></i> Part 1: Decomposition</h2>
+                    <p>Breaking down the problem into smaller, manageable parts:</p>
+                    
+                    <div class="decomposition-item">
+                        <div class="item-title"><i class="fas fa-file-import"></i> Input Processing</div>
+                        <div class="item-explanation">
+                            Necessary to handle the raw text from the document and prepare it for analysis. 
+                            This involves reading in the text and ensuring we can process it character by character.
+                        </div>
+                    </div>
+                    
+                    <div class="decomposition-item">
+                        <div class="item-title"><i class="fas fa-filter"></i> Character Filtering</div>
+                        <div class="item-explanation">
+                            Necessary to implement the requirements of only counting alphabetic characters
+                            and ignoring case. This ensures non-letter characters are excluded from our count.
+                        </div>
+                    </div>
+                    
+                    <div class="decomposition-item">
+                        <div class="item-title"><i class="fas fa-chart-bar"></i> Frequency Counting</div>
+                        <div class="item-explanation">
+                            Essential for tracking and updating the count of each letter as we process the text.
+                            This is the core functionality of our solution.
+                        </div>
+                    </div>
+                    
+                    <div class="decomposition-item">
+                        <div class="item-title"><i class="fas fa-file-export"></i> Result Formatting</div>
+                        <div class="item-explanation">
+                            Necessary to present the final letter frequency counts in the required format.
+                            This ensures the output is usable and meets the specifications.
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <div id="pattern" class="tab-content">
+                <section class="card">
+                    <h2><i class="fas fa-th"></i> Part 2: Pattern Recognition</h2>
+                    <p>Identifying patterns that could help solve this problem:</p>
+                    
+                    <div class="pattern-item">
+                        <div class="item-title"><i class="fas fa-chart-pie"></i> Frequency Distribution Pattern</div>
+                        <div class="item-explanation">
+                            Helpful because it reveals that this is a counting problem where we need to maintain
+                            a running tally for each unique letter. This suggests using a data structure like
+                            a dictionary or hash map to associate letters with their counts.
+                        </div>
+                    </div>
+                    
+                    <div class="pattern-item">
+                        <div class="item-title"><i class="fas fa-font"></i> Character Classification Pattern</div>
+                        <div class="item-explanation">
+                            Helpful because we need to distinguish between alphabetic and non-alphabetic characters.
+                            Recognizing this pattern lets us use built-in functions or ASCII ranges to filter the input.
+                        </div>
+                    </div>
+                    
+                    <div class="pattern-item">
+                        <div class="item-title"><i class="fas fa-exchange-alt"></i> Case Normalization Pattern</div>
+                        <div class="item-explanation">
+                            Helpful because we need to count uppercase and lowercase versions of the same letter together.
+                            This pattern suggests converting all letters to the same case before counting.
+                        </div>
+                    </div>
+                    
+                    <div class="pattern-item">
+                        <div class="item-title"><i class="fas fa-stream"></i> Incremental Processing Pattern</div>
+                        <div class="item-explanation">
+                            Helpful because we can process the text one character at a time, which simplifies
+                            the algorithm and makes it more memory-efficient, especially for large documents.
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <div id="abstraction" class="tab-content">
+                <section class="card">
+                    <h2><i class="fas fa-layer-group"></i> Part 3: Abstraction</h2>
+                    <p>Details that can be ignored or simplified when solving this problem:</p>
+                    
+                    <div class="abstraction-item">
+                        <div class="item-title"><i class="fas fa-align-left"></i> Text Formatting and Layout</div>
+                        <div class="item-explanation">
+                            We can ignore text formatting like bold, italic, or underline, as well as document layout
+                            like paragraphs or line breaks. These don't affect the frequency count of letters.
+                        </div>
+                    </div>
+                    
+                    <div class="abstraction-item">
+                        <div class="item-title"><i class="fas fa-hashtag"></i> Non-alphabetic Characters</div>
+                        <div class="item-explanation">
+                            We can ignore punctuation, numbers, symbols, and whitespace because the problem
+                            specifically states to count only alphabetic characters (A-Z).
+                        </div>
+                    </div>
+                    
+                    <div class="abstraction-item">
+                        <div class="item-title"><i class="fas fa-text-height"></i> Character Case</div>
+                        <div class="item-explanation">
+                            We can abstract away the distinction between uppercase and lowercase letters
+                            since we're instructed to treat them as the same letter (e.g., 'a' and 'A').
+                        </div>
+                    </div>
+                    
+                    <div class="abstraction-item">
+                        <div class="item-title"><i class="fas fa-random"></i> Order of Characters in Input</div>
+                       <div class="item-explanation">
+                            We can ignore the original order of characters in the text. Since we're only interested in 
+                            counting frequencies, the arrangement of letters doesn't matter for our solution.
+                        </div>
+                    </div>
+                    
+                    <div class="abstraction-item">
+                        <div class="item-title"><i class="fas fa-language"></i> Word Meaning and Context</div>
+                        <div class="item-explanation">
+                            We can abstract away the semantic meaning of the text. Our algorithm doesn't need to 
+                            understand the content; it only needs to count the occurrences of each letter.
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <div id="algorithm" class="tab-content">
+                <section class="card">
+                    <h2><i class="fas fa-cogs"></i> Part 4: Algorithm Design</h2>
+                    <p>The step-by-step process for counting letter frequencies:</p>
+                    
+                    <div class="flowchart-container">
+                        <div class="flowchart-placeholder">
+                            <i class="fas fa-project-diagram"></i>
+                            <p>Algorithm Flowchart</p>
+                            <p>1. Initialize an empty dictionary to store letter counts</p>
+                            <p>2. For each character in the text:</p>
+                            <p>   a. Check if it's an alphabetic character</p>
+                            <p>   b. If yes, convert to uppercase</p>
+                            <p>   c. Increment the count for this letter in the dictionary</p>
+                            <p>3. Return the final frequency dictionary</p>
+                        </div>
+                    </div>
+                    
+                    <div class="time-complexity">
+                        <div class="key-insight-title"><i class="fas fa-tachometer-alt"></i> Time & Space Complexity</div>
+                        <p><strong>Time Complexity:</strong> O(n) where n is the length of the text. We need to process each character once.</p>
+                        <p><strong>Space Complexity:</strong> O(1) because there are at most 26 letters in the English alphabet, so our dictionary will have a constant maximum size.</p>
+                    </div>
+                    
+                    <h3>Pseudocode:</h3>
+                    <div class="implementation">
+                        <div class="implementation-header">
+                            <span>Letter Frequency Analysis</span>
+                            <span class="implementation-language">Pseudocode</span>
+                        </div>
+                        <pre>
+FUNCTION CountLetterFrequency(text):
+    Initialize empty dictionary frequency
+    
+    FOR each character c in text:
+        IF c is an alphabetic character:
+            Convert c to uppercase
+            IF c exists in frequency:
+                Increment frequency[c] by 1
+            ELSE:
+                Set frequency[c] to 1
+    
+    RETURN frequency
+                        </pre>
+                    </div>
+                </section>
+            </div>
+            
+            <div id="implementation" class="tab-content">
+                <section class="card">
+                    <h2><i class="fas fa-code"></i> Part 5: Implementation</h2>
+                    <p>Let's implement our algorithm in Python:</p>
+                    
+                    <div class="implementation">
+                        <div class="implementation-header">
+                            <span>Letter Frequency Analysis</span>
+                            <span class="implementation-language">Python</span>
+                        </div>
+                        <pre>
+def count_letter_frequency(text):
+    """
+    Count the frequency of each letter (A-Z) in the text.
+    Ignores case and non-alphabetic characters.
+    
+    Args:
+        text (str): The input text to analyze
+        
+    Returns:
+        dict: A dictionary mapping uppercase letters to their frequencies
+    """
+    frequency = {}
+    
+    for char in text:
+        # Check if character is alphabetic
+        if char.isalpha():
+            # Convert to uppercase for case-insensitive counting
+            char = char.upper()
+            
+            # Increment count in dictionary
+            if char in frequency:
+                frequency[char] += 1
+            else:
+                frequency[char] = 1
+    
+    return frequency
+
+# Example usage
+if __name__ == "__main__":
+    sample_text = "Hello, World!"
+    result = count_letter_frequency(sample_text)
+    print(result)
+    # Output: {'H': 1, 'E': 1, 'L': 3, 'O': 2, 'R': 1, 'W': 1, 'D': 1}
+                        </pre>
+                    </div>
+                    
+                    <h3>Alternative Implementation with Counter</h3>
+                    <div class="implementation">
+                        <div class="implementation-header">
+                            <span>Using Python's Counter</span>
+                            <span class="implementation-language">Python</span>
+                        </div>
+                        <pre>
+from collections import Counter
+
+def count_letter_frequency_with_counter(text):
+    """
+    Count the frequency of each letter (A-Z) in the text using Counter.
+    Ignores case and non-alphabetic characters.
+    
+    Args:
+        text (str): The input text to analyze
+        
+    Returns:
+        dict: A dictionary mapping uppercase letters to their frequencies
+    """
+    # Filter for alphabetic characters and convert to uppercase
+    letters = [char.upper() for char in text if char.isalpha()]
+    
+    # Use Counter to count occurrences
+    frequency = Counter(letters)
+    
+    return dict(frequency)
+
+# Example usage
+if __name__ == "__main__":
+    sample_text = "Hello, World!"
+    result = count_letter_frequency_with_counter(sample_text)
+    print(result)
+    # Output: {'H': 1, 'E': 1, 'L': 3, 'O': 2, 'R': 1, 'W': 1, 'D': 1}
+                        </pre>
+                    </div>
+                </section>
+            </div>
+        </div>
+        
+        <section class="card">
+            <h2><i class="fas fa-flask"></i> Further Exploration</h2>
+            
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="insight-title">Visualization Extensions</div>
+                    <p>Extend the algorithm to create a bar chart or histogram that visually represents the letter frequencies.</p>
+                </div>
+                
+                <div class="insight-card">
+                    <div class="insight-icon"><i class="fas fa-language"></i></div>
+                    <div class="insight-title">Language Analysis</div>
+                    <p>Compare the letter frequencies with known patterns in English text to identify potential languages or detect encrypted text.</p>
+                </div>
+                
+                <div class="insight-card">
+                    <div class="insight-icon"><i class="fas fa-file-csv"></i></div>
+                    <div class="insight-title">Data Export</div>
+                    <p>Enhance the algorithm to export results to CSV or JSON formats for further analysis.</p>
+                </div>
+                
+                <div class="insight-card">
+                    <div class="insight-icon"><i class="fas fa-sort-amount-down"></i></div>
+                    <div class="insight-title">Sorting Extensions</div>
+                    <p>Add options to sort the results alphabetically or by frequency (ascending or descending).</p>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            Algorithmic Thinking Assessment - Letter Frequency Analysis
+        </footer>
+    </div>
+    
+    <script>
+        // Show/hide tab content
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to selected button and content
+                button.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+                
+                // Update progress bar
+                updateProgress();
+            });
+        });
+        
+        // Update progress bar based on active tab
+        function updateProgress() {
+            const activeTab = document.querySelector('.tab-button.active');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const index = Array.from(tabButtons).indexOf(activeTab);
+            const progressPercent = (index / (tabButtons.length - 1)) * 100;
+            
+            document.getElementById('progressBar').style.width = `${progressPercent}%`;
+        }
+        
+        // Initial progress update
+        updateProgress();
+        
+        // Handle the interactive demo
+        document.getElementById('analyzeBtn').addEventListener('click', () => {
+            const input = document.getElementById('demoInput').value;
+            const result = countLetterFrequency(input);
+            
+            document.getElementById('resultContainer').style.display = 'block';
+            document.getElementById('resultDisplay').textContent = JSON.stringify(result, null, 2);
+        });
+        
+        // Letter frequency analysis function
+        function countLetterFrequency(text) {
+            const frequency = {};
+            
+            for (const char of text) {
+                if (/[a-zA-Z]/.test(char)) {
+                    const upperChar = char.toUpperCase();
+                    
+                    if (frequency[upperChar]) {
+                        frequency[upperChar]++;
+                    } else {
+                        frequency[upperChar] = 1;
+                    }
+                }
+            }
+            
+            return frequency;
+        }
+        
+        // Collapsible sections
+        const collapsibles = document.querySelectorAll('.collapsible');
+        
+        collapsibles.forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
