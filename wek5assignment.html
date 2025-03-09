@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Edu Connect 247 - Assignments</title>
+    <style>
+        :root {
+            --primary: #4169E1;
+            --primary-light: #6495ED;
+            --primary-dark: #1E3A8A;
+            --secondary: #FF6B6B;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --dark: #1F2937;
+            --light: #F3F4F6;
+            --white: #FFFFFF;
+            --gray: #9CA3AF;
+        }
+
+        * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Alegreya SC', sans-serif;
+}
+
+        body {
+            background-color: #F5F7FA;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .main-content {
+            margin: 2rem 0;
+        }
+
+        .card {
+            background-color: var(--white);
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        /* Progress Tracker Styles */
+        .progress-tracker {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card.total {
+            border-top: 4px solid var(--primary);
+        }
+
+        .stat-card.completed {
+            border-top: 4px solid var(--success);
+        }
+
+        .stat-card.pending {
+            border-top: 4px solid var(--warning);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 12px;
+            background-color: #E5E7EB;
+            border-radius: 6px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--success);
+            border-radius: 6px;
+            transition: width 0.3s ease;
+        }
+
+        /* Filter and Sort Controls */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        select, input {
+            padding: 0.5rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        select {
+            background-color: var(--white);
+        }
+
+        .search-box {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding-left: 2.5rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        th:hover {
+            color: var(--primary);
+        }
+
+        .sort-icon {
+            display: inline-block;
+            margin-left: 0.25rem;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background-color: #F9FAFB;
+            cursor: pointer;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-pending {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .badge-completed {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--gray);
+            color: var(--dark);
+        }
+
+        .btn-outline:hover {
+            background-color: #F9FAFB;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        .download-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .download-link:hover {
+            text-decoration: underline;
+        }
+
+        .download-link svg {
+            margin-right: 0.5rem;
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 10% auto;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            animation: modalOpen 0.3s ease;
+        }
+
+        @keyframes modalOpen {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .close {
+            color: var(--gray);
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--dark);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #E5E7EB;
+            text-align: right;
+        }
+
+        .description {
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .info-label {
+            width: 150px;
+            font-weight: 500;
+            color: var(--gray);
+        }
+
+        .info-value {
+            flex-grow: 1;
+        }
+
+        .countdown {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: #FEF3C7;
+            color: #92400E;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .countdown.expired {
+            background-color: #FEE2E2;
+            color: #B91C1C;
+        }
+
+        .status-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: #F9FAFB;
+            border-radius: 0.5rem;
+        }
+
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+            margin-right: 0.75rem;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #E5E7EB;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--white);
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--success);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .toggle-label {
+            font-weight: 500;
+        }
+
+        .comments-section {
+            margin-top: 2rem;
+        }
+
+        .comment-header {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .comment-form {
+            margin-bottom: 1.5rem;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.25rem;
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: 1rem;
+        }
+
+        .comments-list {
+            border-top: 1px solid #E5E7EB;
+            padding-top: 1rem;
+        }
+
+        .comment {
+            padding: 1rem 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .comment-user {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .comment-date {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                order: -1;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .info-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .info-label {
+                width: 100%;
+                margin-bottom: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container main-content">
+        <!-- Progress Tracker -->
+        <div class="card">
+            <div class="title">All Assignment In This Page Related To Week 5 Of The Course</div>
+            <div class="progress-tracker">
+                <div class="stat-card total">
+                    <div class="stat-number" id="total-assignments">9</div>
+                    <div class="stat-title">Total Assignments</div>
+                </div>
+                <div class="stat-card completed">
+                    <div class="stat-number" id="completed-assignments">6</div>
+                    <div class="stat-title">Completed</div>
+                </div>
+                <div class="stat-card pending">
+                    <div class="stat-number" id="pending-assignments">3</div>
+                    <div class="stat-title">Pending</div>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar" style="width: 100%;"></div>
+            </div>
+        </div>
+
+        <!-- Assignments Table -->
+        <div class="card">
+            <div class="title">My Assignments</div>
+            <div class="controls">
+                <select id="filter-subject">
+                    <option value="">All Subjects</option>
+                    <option value="LANA">LANA</option>
+                    <option value="FSP">FSP</option>
+                    <option value="BDA">BDA</option>
+                    <option value="ATA">ATA</option>
+                </select>
+                <select id="filter-status">
+                    <option value="">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                </select>
+                <select id="sort-by">
+                    <option value="due-asc">Due Date (Earliest First)</option>
+                    <option value="due-desc">Due Date (Latest First)</option>
+                    <option value="title-asc">Title (A-Z)</option>
+                    <option value="title-desc">Title (Z-A)</option>
+                </select>
+                <div class="search-box">
+                    <span class="search-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </span>
+                    <input type="text" id="search-input" placeholder="Search assignments...">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-sort="title">Assignment Title <span class="sort-icon">↓</span></th>
+                            <th data-sort="subject">Subject</th>
+                            <th data-sort="due">Due Date <span class="sort-icon">↑</span></th>
+                            <th data-sort="status">Status</th>
+                            <th>Solution</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assignments-table">
+                        <!-- Table rows will be dynamically populated -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assignment Details Modal -->
+    <div id="assignment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title">Assignment Title</div>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="description" id="modal-description">
+                    Assignment description will appear here.
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Subject:</div>
+                    <div class="info-value" id="modal-subject">Subject</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Due Date:</div>
+                    <div class="info-value">
+                        <span id="modal-due-date">Due date</span>
+                        <span class="countdown" id="modal-countdown">3 days left</span>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Solution:</div>
+                    <div class="info-value">
+                        <a href="#" class="download-link" id="modal-solution-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <span id="modal-solution-text">Go To Solution (PDF)</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="status-toggle">
+                    <div class="toggle-wrapper">
+                        <label class="toggle">
+                            <input type="checkbox" id="status-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="toggle-label">Mark as Completed</span>
+                    </div>
+                    <div id="toggle-status">Status: <span class="badge badge-pending">Pending</span></div>
+                </div>
+
+                <div class="comments-section">
+                    <div class="comment-header">Comments & Discussion</div>
+                    <div class="comment-form">
+                        <textarea id="comment-input" placeholder="Add your comment or question here..."></textarea>
+                        <button class="btn btn-primary" id="post-comment">Post Comment</button>
+                    </div>
+                    <div class="comments-list" id="comments-list">
+                        <!-- Comments will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="close-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data - In a real application, this would come from a database
+        const assignments = [
+            {
+                id: 1,
+                title: "Week-5-Assignment Quiz LANA ",
+                subject: "LANA",
+                dueDate: "2025-03-7",
+                status: "Completed",
+                description:  " This is an activity based assignment. On each page, first you'll get an activity and then based on that activity few questions. Total duration of the quiz is 30 minutes. There are 5 activities, it is recomended not to spend more than 5 minutes on each activity. ",
+                solutionUrl: "https://iitjbsc.futurense.com/mod/quiz/view.php?id=2302",
+                solutionType: "Link"
+            },
+            {
+                id: 2,
+                title: "Week-5-Assignment Quiz FSP",
+                subject: "FSP",
+                dueDate: "2025-03-7",
+                status: "Completed",
+                description: " Please download the reference dataset from this link: FSP Assignment 04 Dataset.xlsx.",
+                solutionUrl: "https://iitjbsc.futurense.com/mod/quiz/view.php?id=2294",
+                solutionType: "Link"
+            },
+            {
+                id: 3,
+                title: "Week-5-Assignment Quiz BDA",
+                subject: "BDA",
+                dueDate: "2025-03-7",
+                status: "Completed",
+                description: "This is a scenario based assignment. Each page of this quiz will have one scenario and it's associated questions. There are total 4 scenarios. Please read carefully, understand the scenario and then answer the questions. Total duration of the quiz is 45 min. It is recommended to invest not more than 10 minutes on each scenario.",
+                solutionUrl: "https://iitjbsc.futurense.com/mod/quiz/view.php?id=2297",
+                solutionType: "Link"
+            },
+            {
+                id: 4,
+                title: "Week-5-Assignment Quiz ATA",
+                subject: "ATA",
+                dueDate: "2025-03-7",
+                status: "Completed",
+                description: "This is an activity based assignment. On each page, first you'll get an activity and then based on that activity few questions. Total duration of the quiz is 25 minutes. There are 4 activities, it is recomended not to spend more than 5 minutes on each activity.",
+                solutionUrl: "https://iitjbsc.futurense.com/mod/quiz/view.php?id=2278",
+                solutionType: "Link"
+            },
+            {
+                id: 5,
+                title: "Activity with Colab and Numpy is due",
+                subject: "LANA",
+                dueDate: "2025-03-10",
+                status: "Completed",
+                description: "NumPy Matrix Transpose Challenge, Problem: Create a 4x3 matrix of weekly temperatures in four Indian cities over three days. Transpose it so that days become rows and cities become columns. Submit the code and output screenshot.",
+                solutionUrl: "#",
+                solutionType: "Link"
+            },
+            {
+                id: 6,
+                title: "Activity with Flourish Studio is due",
+                subject: "FSP",
+                dueDate: "2025-03-11",
+                status: "Pending",
+                description: "Pick any dataset related to football, use 'flourish Studio' to graphically represent this data and upload screenshot of this data visualization.",
+                solutionUrl: "#",
+                solutionType: "PDF"
+            },
+            {
+                id: 7,
+                title: "Activity with Canva Magic Media , Lexica.art is due",
+                subject: "BDA",
+                dueDate: "2025-03-13",
+                status: "Pending",
+                description: "Use DeepAI Text Generator to create : A short story about a mysterious adventure. A humorous joke about a quirky character. Submission: Provide screenshots of your prompts and the resulting outputs, along with a brief explanation of your creative choices.",
+                solutionUrl: "#",
+                solutionType: "PDF"
+            },
+            {
+                id: 8,
+                title: " Activity with Logicly, CircuitVerse is due",
+                subject: "ATA",
+                dueDate: "2025-03-12",
+                status: "Pending",
+                description: "Task 1: Boolean Conditions in Python - Write a program that determines if a student qualifies for a scholarship. Task 2: Complex Circuit Design in CircuitVerse - Create a home security circuit where an alarm sounds if:(Door is open AND motion detected) OR (Glass is broken)",
+                solutionUrl: "https://seashell-cod-465831.hostingersite.com/ta-assignment-ata-week-5/",
+                solutionType: "Link"
+            },
+            {
+                id: 9,
+                title: "Week 5-TA Live Session Special Assignment-4_01.03.2025 (Mandatory)",
+                subject: "ATA",
+                dueDate: "2025-03-7",
+                status: "Completed",
+                description: "Create an algorithm to count the frequency of each letter (A-Z) in a text document. Your solution should ignore case (count 'a' and 'A' as the same letter) and ignore any non-alphabetic characters.",
+                solutionUrl: "https://seashell-cod-465831.hostingersite.com/ta-assignment-ata-week-5/",
+                solutionType: "Link"
+            },
+
+        ];
+
+        // Sample comments data
+        const comments = {
+            1: [
+               {
+            user: "Aditya Chaudhary",
+            date: "2025-03-09 13:20",
+            text: "The activity where we had to find eigenvalues was quite challenging. Did anyone manage to solve the last question within the time limit?"
+        },
+        {
+            user: "Siddharth Reddy",
+            date: "2025-03-09 14:05",
+            text: "I used the shortcut method for finding determinants that Professor taught last week. It saved a lot of time during the quiz."
+        }
+            ],
+            3: [
+                {
+            user: "Kabir Sharma",
+            date: "2025-03-08 19:20",
+            text: "The scenario about predictive maintenance was interesting but I wasn't sure about the best algorithm to use. I went with Random Forest."
+        },
+            ],
+            5: [
+                {
+            user: "Aryan Malhotra",
+            date: "2025-03-09 15:30",
+            text: "I chose Delhi, Mumbai, Jaipur, and Bangalore for my temperature matrix. Using np.transpose() made the operation very straightforward."
+        },
+        {
+            user: "Dhruv Patel",
+            date: "2025-03-09 16:40",
+            text: "Does anyone know if we need to include standard deviation calculations for the temperatures? The description wasn't clear about additional statistics."
+        }
+            ]
+        };
+
+        // DOM Elements
+        const assignmentsTable = document.getElementById('assignments-table');
+        const totalAssignments = document.getElementById('total-assignments');
+        const completedAssignments = document.getElementById('completed-assignments');
+        const pendingAssignments = document.getElementById('pending-assignments');
+        const progressBar = document.getElementById('progress-bar');
+        const modal = document.getElementById('assignment-modal');
+        const closeBtn = document.querySelector('.close');
+        const closeModalBtn = document.getElementById('close-modal');
+        const statusToggle = document.getElementById('status-toggle');
+        const toggleStatus = document.getElementById('toggle-status');
+        const commentInput = document.getElementById('comment-input');
+        const postCommentBtn = document.getElementById('post-comment');
+        const commentsList = document.getElementById('comments-list');
+        const filterSubject = document.getElementById('filter-subject');
+        const filterStatus = document.getElementById('filter-status');
+        const sortBy = document.getElementById('sort-by');
+        const searchInput = document.getElementById('search-input');
+        
+        let currentAssignmentId = null;
+
+        // Initialize
+        function init() {
+            updateAssignmentsTable();
+            updateProgressTracker();
+            setupEventListeners();
+        }
+
+        // Update assignments table based on filters and sorting
+        function updateAssignmentsTable() {
+            // Get filter values
+            const subjectFilter = filterSubject.value;
+            const statusFilter = filterStatus.value;
+            const searchTerm = searchInput.value.toLowerCase();
+            const sortOption = sortBy.value;
+
+            // Filter assignments
+            let filteredAssignments = assignments.filter(assignment => {
+                const matchesSubject = !subjectFilter || assignment.subject === subjectFilter;
+                const matchesStatus = !statusFilter || assignment.status === statusFilter;
+                const matchesSearch = !searchTerm || 
+                    assignment.title.toLowerCase().includes(searchTerm) || 
+                    assignment.subject.toLowerCase().includes(searchTerm) ||
+                    assignment.description.toLowerCase().includes(searchTerm);
+                
+                return matchesSubject && matchesStatus && matchesSearch;
+            });
+
+            // Sort assignments
+            filteredAssignments.sort((a, b) => {
+                switch(sortOption) {
+                    case 'due-asc':
+                        return new Date(a.dueDate) - new Date(b.dueDate);
+                                        case 'due-desc':
+                        return new Date(b.dueDate) - new Date(a.dueDate);
+                    case 'title-asc':
+                        return a.title.localeCompare(b.title);
+                    case 'title-desc':
+                        return b.title.localeCompare(a.title);
+                    default:
+                        return 0;
+                }
+            });
+
+            // Clear existing table rows
+            assignmentsTable.innerHTML = '';
+
+            // Populate table with filtered and sorted assignments
+            filteredAssignments.forEach(assignment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${assignment.title}</td>
+                    <td>${assignment.subject}</td>
+                    <td>${formatDate(assignment.dueDate)}</td>
+                    <td><span class="badge badge-${assignment.status.toLowerCase()}">${assignment.status}</span></td>
+                    <td>
+                        <a href="${assignment.solutionUrl}" class="download-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            ${assignment.solutionType}
+                        </a>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm view-details" data-id="${assignment.id}">View Details</button>
+                    </td>
+                `;
+                assignmentsTable.appendChild(row);
+            });
+
+            // Update event listeners for new buttons
+            setupViewDetailsListeners();
+        }
+
+        // Helper function to format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            filterSubject.addEventListener('change', updateAssignmentsTable);
+            filterStatus.addEventListener('change', updateAssignmentsTable);
+            sortBy.addEventListener('change', updateAssignmentsTable);
+            searchInput.addEventListener('input', updateAssignmentsTable);
+            closeBtn.addEventListener('click', closeModal);
+            closeModalBtn.addEventListener('click', closeModal);
+            statusToggle.addEventListener('change', updateAssignmentStatus);
+            postCommentBtn.addEventListener('click', postComment);
+        }
+
+        // Setup view details button listeners
+        function setupViewDetailsListeners() {
+            document.querySelectorAll('.view-details').forEach(button => {
+                button.addEventListener('click', function() {
+                    const assignmentId = parseInt(this.getAttribute('data-id'));
+                    openAssignmentModal(assignmentId);
+                });
+            });
+        }
+
+        // Open assignment modal
+        function openAssignmentModal(assignmentId) {
+            const assignment = assignments.find(a => a.id === assignmentId);
+            currentAssignmentId = assignmentId;
+
+            document.getElementById('modal-title').textContent = assignment.title;
+            document.getElementById('modal-description').textContent = assignment.description;
+            document.getElementById('modal-subject').textContent = assignment.subject;
+            document.getElementById('modal-due-date').textContent = formatDate(assignment.dueDate);
+            document.getElementById('modal-solution-text').textContent = `Download Solution (${assignment.solutionType})`;
+            document.getElementById('modal-solution-link').href = assignment.solutionUrl;
+
+            statusToggle.checked = assignment.status === 'Completed';
+            toggleStatus.innerHTML = `Status: <span class="badge badge-${assignment.status.toLowerCase()}">${assignment.status}</span>`;
+
+            updateCountdown(assignment.dueDate);
+            loadComments(assignmentId);
+
+            modal.classList.add('show');
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('show');
+        }
+
+        // Update assignment status
+        function updateAssignmentStatus() {
+            const assignment = assignments.find(a => a.id === currentAssignmentId);
+            assignment.status = statusToggle.checked ? 'Completed' : 'Pending';
+            toggleStatus.innerHTML = `Status: <span class="badge badge-${assignment.status.toLowerCase()}">${assignment.status}</span>`;
+            updateAssignmentsTable();
+            updateProgressTracker();
+        }
+
+        // Load comments for an assignment
+        function loadComments(assignmentId) {
+            commentsList.innerHTML = '';
+            const assignmentComments = comments[assignmentId] || [];
+            assignmentComments.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment';
+                commentElement.innerHTML = `
+                    <div class="comment-user">${comment.user}</div>
+                    <div class="comment-date">${comment.date}</div>
+                    <div class="comment-text">${comment.text}</div>
+                `;
+                commentsList.appendChild(commentElement);
+            });
+        }
+
+        // Post a new comment
+        function postComment() {
+            const commentText = commentInput.value.trim();
+            if (commentText) {
+                const newComment = {
+                    user: "Current User", // In a real app, this would be the logged-in user
+                    date: new Date().toLocaleString(),
+                    text: commentText
+                };
+                if (!comments[currentAssignmentId]) {
+                    comments[currentAssignmentId] = [];
+                }
+                comments[currentAssignmentId].push(newComment);
+                loadComments(currentAssignmentId);
+                commentInput.value = '';
+            }
+        }
+
+        // Update progress tracker
+        function updateProgressTracker() {
+            const total = assignments.length;
+            const completed = assignments.filter(a => a.status === 'Completed').length;
+            const pending = total - completed;
+
+            totalAssignments.textContent = total;
+            completedAssignments.textContent = completed;
+            pendingAssignments.textContent = pending;
+
+            const progressPercentage = (completed / total) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+        }
+
+        // Update countdown
+        function updateCountdown(dueDate) {
+            const now = new Date();
+            const due = new Date(dueDate);
+            const diff = due - now;
+            const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+            const countdownElement = document.getElementById('modal-countdown');
+            if (days > 0) {
+                countdownElement.textContent = `${days} day${days > 1 ? 's' : ''} left`;
+                countdownElement.className = 'countdown';
+            } else {
+                countdownElement.textContent = 'Expired';
+                countdownElement.className = 'countdown expired';
+            }
+        }
+
+        // Initialize the application
+        init();
+    </script>
+</body>
+</html>
