@@ -640,13 +640,8 @@
                 <div class="info-row">
                     <div class="info-label">Solution:</div>
                     <div class="info-value">
-                        <a href="#" class="download-link" id="modal-solution-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                            </svg>
-                            <span id="modal-solution-text">Go To Solution (PDF)</span>
+                        <a href="#" class="go to-link" id="modal-solution-link">
+                           <span id="modal-solution-text">Go to Solution (Link)</span>
                         </a>
                     </div>
                 </div>
@@ -728,7 +723,7 @@
                 dueDate: "2025-03-10",
                 status: "Completed",
                 description: "NumPy Matrix Transpose Challenge, Problem: Create a 4x3 matrix of weekly temperatures in four Indian cities over three days. Transpose it so that days become rows and cities become columns. Submit the code and output screenshot.",
-                solutionUrl: "#",
+                solutionUrl: "https://seashell-cod-465831.hostingersite.com/week-5-activity-with-colab-and-numpy/",
                 solutionType: "Link"
             },
             {
@@ -942,7 +937,7 @@
             document.getElementById('modal-description').textContent = assignment.description;
             document.getElementById('modal-subject').textContent = assignment.subject;
             document.getElementById('modal-due-date').textContent = formatDate(assignment.dueDate);
-            document.getElementById('modal-solution-text').textContent = `Download Solution (${assignment.solutionType})`;
+            document.getElementById('modal-solution-text').textContent = `Go to Solution (${assignment.solutionType})`;
             document.getElementById('modal-solution-link').href = assignment.solutionUrl;
 
             statusToggle.checked = assignment.status === 'Completed';
